@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c084fc" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#1a0a2e"/>
+  <!-- Magic glow -->
+  <circle cx="32" cy="28" r="16" fill="url(#glow)"/>
+  <!-- Wizard hat -->
+  <polygon points="32,6 22,30 42,30" fill="#7C3AED"/>
+  <polygon points="32,6 26,20 38,20" fill="#9333ea"/>
+  <!-- Hat brim -->
+  <ellipse cx="32" cy="30" rx="14" ry="4" fill="#5b21b6"/>
+  <!-- Star on hat -->
+  <polygon points="32,12 33,15 36,15 34,17 35,20 32,18 29,20 30,17 28,15 31,15" fill="#fbbf24"/>
+  <!-- Face -->
+  <circle cx="32" cy="36" r="6" fill="#fbbf24" opacity="0.3"/>
+  <!-- Beard -->
+  <path d="M26,36 Q32,50 38,36" fill="#e2e8f0" opacity="0.9"/>
+  <!-- Staff orb -->
+  <circle cx="48" cy="20" r="5" fill="#c084fc"/>
+  <circle cx="48" cy="20" r="3" fill="#e9d5ff"/>
+</svg>

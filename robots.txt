@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://magicwavelee.github.io/sitemap.xml
