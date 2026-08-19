@@ -322,10 +322,15 @@ button:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
       </div>
       <div class="help-section">
         <h3>👾 적</h3>
-        <p><b>🟢 슬라임:</b> 느리고 체력이 적음</p>
-        <p><b>💀 스켈레톤:</b> 빠르고 체력이 많음</p>
-        <p><b>👺 고블린:</b> 가장 빠르고 날렵함</p>
-        <p><b>👹 보스:</b> 5웨이브마다 등장, 웨이브마다 보스 수 증가, 투사체 공격, 처치 시 아이템 3개 드롭</p>
+        <p><b>🟢 슬라임:</b> 느리고 체력이 적음 (웨이브 1~)</p>
+        <p><b>🟩 대 슬라임:</b> 느리지만 체력이 많은 탱커 (웨이브 6~)</p>
+        <p><b>💀 스켈레톤:</b> 빠르고 체력이 많음 (웨이브 6~)</p>
+        <p><b>👺 고블린:</b> 가장 빠르고 날렵함 (웨이브 11~)</p>
+        <p><b>🦇 박쥐:</b> 매우 빠르지만 체력이 적음 (웨이브 11~)</p>
+        <p><b>👹 오크:</b> 느리지만 매우 강한 타격 (웨이브 16~)</p>
+        <p><b>🧙 리치:</b> 원거리 마법 공격, 둔화 (웨이브 16~)</p>
+        <p><b>🐉 드래곤:</b> 매우 강력한 대형 몬스터 (웨이브 21~)</p>
+        <p><b>👿 보스:</b> 5웨이브마다 등장, 웨이브마다 보스 수 증가, 투사체 공격, 처치 시 아이템 3개 드롭</p>
         <p><i>웨이브가 올라갈수록 적의 수와 체력이 증가합니다.</i></p>
       </div>
     </div>
@@ -390,8 +395,13 @@ var LIGHTNING_TARGETS = 4;
 
 var ENEMY_TYPES = {
   slime:    { hp: 30, speed: 60,  damage: 1, points: 10, color: '#4ade80', radius: 14 },
+  bigSlime: { hp: 80, speed: 45,  damage: 2, points: 25, color: '#22c55e', radius: 22 },
   skeleton: { hp: 50, speed: 100, damage: 1, points: 20, color: '#e2e8f0', radius: 16 },
   goblin:   { hp: 25, speed: 150, damage: 1, points: 15, color: '#2d8a4e', radius: 12 },
+  bat:      { hp: 20, speed: 180, damage: 1, points: 15, color: '#a855f7', radius: 10 },
+  orc:      { hp: 120, speed: 55, damage: 3, points: 30, color: '#854d0e', radius: 20 },
+  lich:     { hp: 60,  speed: 70, damage: 2, points: 35, color: '#7c3aed', radius: 16 },
+  dragon:   { hp: 200, speed: 50, damage: 4, points: 50, color: '#ef4444', radius: 28 },
   boss:     { hp: 300, speed: 40, damage: 2, points: 100, color: '#dc2626', radius: 30 }
 };
 var BOSS_INTERVAL = 5;
@@ -1229,6 +1239,396 @@ function drawGoblin(ex, ey, hp, maxHp) {
   drawEnemyHp(ex, ey - 22 + (hop > 2 ? -2 : 0), hp, maxHp, '#3a7a3a');
 }
 
+function drawBigSlime(ex, ey, hp, maxHp) {
+  ctx.save();
+  ctx.translate(ex, ey);
+  var wobble = Math.sin(time * 5 + ex) * 3;
+  var squish = 1 + Math.sin(time * 3) * 0.06;
+
+  ctx.fillStyle = 'rgba(34, 197, 94, 0.3)';
+  ctx.beginPath();
+  ctx.ellipse(0, 16, 22, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.scale(1 / squish, squish);
+  ctx.fillStyle = 'rgba(34, 197, 94, 0.75)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 21, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(34, 197, 94, 0.4)';
+  ctx.beginPath();
+  ctx.arc(-3, -4, 14, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#166534';
+  ctx.beginPath();
+  ctx.ellipse(0, -6, 8, 4, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(-7 + wobble * 0.5, -5, 5, 0, Math.PI * 2);
+  ctx.arc(7 + wobble * 0.5, -5, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a2e';
+  ctx.beginPath();
+  ctx.arc(-6 + wobble * 0.5, -4, 2.5, 0, Math.PI * 2);
+  ctx.arc(8 + wobble * 0.5, -4, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(-5 + wobble * 0.5, -5.5, 1, 0, Math.PI * 2);
+  ctx.arc(9 + wobble * 0.5, -5.5, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = 'rgba(22, 101, 52, 0.5)';
+  ctx.beginPath();
+  ctx.arc(0, 8, 6, 0, Math.PI);
+  ctx.fill();
+
+  ctx.restore();
+  drawEnemyHp(ex, ey - 28, hp, maxHp, '#22c55e');
+}
+
+function drawBat(ex, ey, hp, maxHp) {
+  ctx.save();
+  ctx.translate(ex, ey);
+  var hover = Math.sin(time * 8 + ex * 0.02) * 3;
+  ctx.translate(0, hover);
+  var wingAngle = Math.sin(time * 12) * 0.6;
+
+  ctx.fillStyle = 'rgba(168, 85, 247, 0.2)';
+  ctx.beginPath();
+  ctx.ellipse(0, 10, 10, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.rotate(wingAngle);
+  ctx.fillStyle = '#9333ea';
+  ctx.beginPath();
+  ctx.moveTo(-5, 0);
+  ctx.lineTo(-16, -6);
+  ctx.lineTo(-13, 0);
+  ctx.lineTo(-18, -2);
+  ctx.lineTo(-11, 3);
+  ctx.lineTo(-14, 2);
+  ctx.lineTo(-8, 4);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  ctx.save();
+  ctx.rotate(-wingAngle);
+  ctx.fillStyle = '#9333ea';
+  ctx.beginPath();
+  ctx.moveTo(5, 0);
+  ctx.lineTo(16, -6);
+  ctx.lineTo(13, 0);
+  ctx.lineTo(18, -2);
+  ctx.lineTo(11, 3);
+  ctx.lineTo(14, 2);
+  ctx.lineTo(8, 4);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  ctx.fillStyle = '#a855f7';
+  ctx.beginPath();
+  ctx.arc(0, 0, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#7c3aed';
+  ctx.beginPath();
+  ctx.arc(0, 1, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.arc(-3, -2, 2, 0, Math.PI * 2);
+  ctx.arc(3, -2, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.arc(-3, -2, 1, 0, Math.PI * 2);
+  ctx.arc(3, -2, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.moveTo(-2, 3);
+  ctx.lineTo(-1, 6);
+  ctx.lineTo(0, 3);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(0, 3);
+  ctx.lineTo(1, 6);
+  ctx.lineTo(2, 3);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+  drawEnemyHp(ex, ey - 14 + (hover > 0 ? -1 : 0), hp, maxHp, '#a855f7');
+}
+
+function drawOrc(ex, ey, hp, maxHp) {
+  ctx.save();
+  ctx.translate(ex, ey);
+  var wobble = Math.sin(time * 3 + ex) * 2;
+  var breath = Math.sin(time * 2.5) * 1.5;
+
+  ctx.fillStyle = 'rgba(133, 77, 14, 0.2)';
+  ctx.beginPath();
+  ctx.ellipse(0, 18, 20, 5, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#6b3410';
+  ctx.beginPath();
+  ctx.ellipse(0, 5 + breath * 0.3, 14, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#854d0e';
+  ctx.beginPath();
+  ctx.ellipse(0, 3, 12, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#713f12';
+  ctx.beginPath();
+  ctx.fillRect(-8, 18, 6, 12);
+  ctx.fillRect(2, 18, 6, 12);
+  ctx.fillStyle = '#572a0e';
+  ctx.fillRect(-9, 28, 7, 3);
+  ctx.fillRect(2, 28, 7, 3);
+
+  ctx.fillStyle = '#854d0e';
+  ctx.save();
+  ctx.rotate(Math.sin(time * 4 + ex) * 0.05);
+  ctx.fillRect(-20, -2 + wobble, 14, 5);
+  ctx.fillRect(6, -2 - wobble, 14, 5);
+  ctx.fillStyle = '#6b3410';
+  ctx.beginPath();
+  ctx.arc(-21, 0 + wobble, 4, 0, Math.PI * 2);
+  ctx.arc(21, 0 - wobble, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  ctx.fillStyle = '#92400e';
+  ctx.beginPath();
+  ctx.arc(0, -8, 12, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#fef3c7';
+  ctx.beginPath();
+  ctx.arc(-4, -9, 3.5, 0, Math.PI * 2);
+  ctx.arc(4, -9, 3.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#dc2626';
+  ctx.beginPath();
+  ctx.arc(-4, -9, 2, 0, Math.PI * 2);
+  ctx.arc(4, -9, 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.arc(-4, -9, 1, 0, Math.PI * 2);
+  ctx.arc(4, -9, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#fef3c7';
+  ctx.beginPath();
+  ctx.moveTo(-6, -3);
+  ctx.lineTo(-8, 2);
+  ctx.lineTo(-4, 1);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(6, -3);
+  ctx.lineTo(8, 2);
+  ctx.lineTo(4, 1);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.arc(0, -1, 3, 0, Math.PI);
+  ctx.fill();
+
+  ctx.restore();
+  drawEnemyHp(ex, ey - 24, hp, maxHp, '#854d0e');
+}
+
+function drawLich(ex, ey, hp, maxHp) {
+  ctx.save();
+  ctx.translate(ex, ey);
+  var float = Math.sin(time * 3) * 3;
+  var robeWave = Math.sin(time * 4) * 2;
+
+  // Dark robe body
+  ctx.fillStyle = '#2e1065';
+  ctx.beginPath();
+  ctx.moveTo(-10, 6);
+  ctx.lineTo(-14, 18 + robeWave);
+  ctx.lineTo(14, 18 + robeWave);
+  ctx.lineTo(10, 6);
+  ctx.closePath();
+  ctx.fill();
+
+  // Inner robe
+  ctx.fillStyle = '#4c1d95';
+  ctx.beginPath();
+  ctx.moveTo(-7, 6);
+  ctx.lineTo(-9, 16 + robeWave);
+  ctx.lineTo(9, 16 + robeWave);
+  ctx.lineTo(7, 6);
+  ctx.closePath();
+  ctx.fill();
+
+  // Hood
+  ctx.fillStyle = '#1e0a3c';
+  ctx.beginPath();
+  ctx.arc(0, -2 + float, 9, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Hood peak
+  ctx.fillStyle = '#1e0a3c';
+  ctx.beginPath();
+  ctx.moveTo(-6, -6 + float);
+  ctx.lineTo(0, -14 + float);
+  ctx.lineTo(6, -6 + float);
+  ctx.closePath();
+  ctx.fill();
+
+  // Glowing eyes
+  ctx.fillStyle = '#c084fc';
+  ctx.beginPath();
+  ctx.arc(-3, -2 + float, 2, 0, Math.PI * 2);
+  ctx.arc(3, -2 + float, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Eye glow
+  ctx.fillStyle = '#e9d5ff';
+  ctx.beginPath();
+  ctx.arc(-3, -2.5 + float, 0.8, 0, Math.PI * 2);
+  ctx.arc(3, -2.5 + float, 0.8, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Staff
+  ctx.strokeStyle = '#92400e';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(10, -8 + float);
+  ctx.lineTo(10, 14 + robeWave);
+  ctx.stroke();
+
+  // Staff orb
+  ctx.fillStyle = '#a855f7';
+  ctx.beginPath();
+  ctx.arc(10, -10 + float, 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#e9d5ff';
+  ctx.beginPath();
+  ctx.arc(10, -10 + float, 1.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+  drawEnemyHp(ex, ey - 20 + float, hp, maxHp, '#7c3aed');
+}
+
+function drawDragon(ex, ey, hp, maxHp) {
+  ctx.save();
+  ctx.translate(ex, ey);
+  var pulse = Math.sin(time * 2) * 2;
+  var wingFlap = Math.sin(time * 6) * 8;
+
+  // Shadow
+  ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+  ctx.beginPath();
+  ctx.ellipse(0, 20, 22, 6, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Wings
+  ctx.fillStyle = '#991b1b';
+  ctx.beginPath();
+  ctx.moveTo(-8, -4);
+  ctx.lineTo(-28, -14 + wingFlap);
+  ctx.lineTo(-24, 0);
+  ctx.lineTo(-16, -2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(8, -4);
+  ctx.lineTo(28, -14 + wingFlap);
+  ctx.lineTo(24, 0);
+  ctx.lineTo(16, -2);
+  ctx.closePath();
+  ctx.fill();
+
+  // Body
+  ctx.fillStyle = '#dc2626';
+  ctx.beginPath();
+  ctx.ellipse(0, 4, 14, 16, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Belly
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath();
+  ctx.ellipse(0, 6, 8, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Head
+  ctx.fillStyle = '#dc2626';
+  ctx.beginPath();
+  ctx.arc(0, -12 + pulse, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Horns
+  ctx.fillStyle = '#78350f';
+  ctx.beginPath();
+  ctx.moveTo(-6, -18 + pulse);
+  ctx.lineTo(-10, -26 + pulse);
+  ctx.lineTo(-3, -18 + pulse);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(6, -18 + pulse);
+  ctx.lineTo(10, -26 + pulse);
+  ctx.lineTo(3, -18 + pulse);
+  ctx.closePath();
+  ctx.fill();
+
+  // Eyes
+  ctx.fillStyle = '#fbbf24';
+  ctx.beginPath();
+  ctx.arc(-4, -13 + pulse, 2.5, 0, Math.PI * 2);
+  ctx.arc(4, -13 + pulse, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.arc(-4, -13 + pulse, 1.2, 0, Math.PI * 2);
+  ctx.arc(4, -13 + pulse, 1.2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Nostrils
+  ctx.fillStyle = '#991b1b';
+  ctx.beginPath();
+  ctx.arc(-2, -8 + pulse, 1, 0, Math.PI * 2);
+  ctx.arc(2, -8 + pulse, 1, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Fire breath hint
+  var fireAlpha = 0.3 + Math.sin(time * 8) * 0.2;
+  ctx.fillStyle = 'rgba(251, 191, 36, ' + fireAlpha + ')';
+  ctx.beginPath();
+  ctx.moveTo(-2, -6 + pulse);
+  ctx.lineTo(0, -2 + pulse);
+  ctx.lineTo(2, -6 + pulse);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+  drawEnemyHp(ex, ey - 30 + pulse, hp, maxHp, '#ef4444');
+}
+
 function drawBoss(ex, ey, hp, maxHp) {
   ctx.save();
   ctx.translate(ex, ey);
@@ -1735,28 +2135,49 @@ function drawHUD() {
    SPAWNING & ENEMIES
    ═══════════════════════════════════════ */
 function getWaveConfig(w) {
-  var slimes, skeletons, goblins;
+  var slimes, bigSlimes, skeletons, goblins, bats, orcs, lichs, dragons;
   if (w <= 5) {
     slimes = 15 + Math.floor(w * 10);
-    skeletons = 0;
-    goblins = 0;
+    bigSlimes = 0; skeletons = 0; goblins = 0; bats = 0; orcs = 0; lichs = 0; dragons = 0;
   } else if (w <= 10) {
-    slimes = 50 + Math.floor(w * 10);
-    skeletons = Math.max(0, Math.floor((w - 5) * 8));
-    goblins = 0;
+    slimes = 40 + Math.floor(w * 8);
+    bigSlimes = Math.floor((w - 5) * 3);
+    skeletons = Math.floor((w - 5) * 5);
+    goblins = 0; bats = 0; orcs = 0; lichs = 0; dragons = 0;
+  } else if (w <= 15) {
+    slimes = 50 + Math.floor(w * 6);
+    bigSlimes = Math.floor((w - 5) * 3);
+    skeletons = Math.floor((w - 5) * 6);
+    goblins = Math.floor((w - 10) * 5);
+    bats = Math.floor((w - 10) * 4);
+    orcs = 0; lichs = 0; dragons = 0;
+  } else if (w <= 20) {
+    slimes = 60 + Math.floor(w * 5);
+    bigSlimes = Math.floor(w * 2);
+    skeletons = Math.floor(w * 5);
+    goblins = Math.floor((w - 10) * 6);
+    bats = Math.floor((w - 10) * 5);
+    orcs = Math.floor((w - 15) * 3);
+    lichs = Math.floor((w - 15) * 2);
+    dragons = 0;
   } else {
-    slimes = 80 + Math.floor(w * 15);
-    skeletons = Math.max(0, Math.floor((w - 5) * 10));
-    goblins = Math.max(0, Math.floor((w - 10) * 8));
+    slimes = 70 + Math.floor(w * 4);
+    bigSlimes = Math.floor(w * 2);
+    skeletons = Math.floor(w * 4);
+    goblins = Math.floor((w - 10) * 5);
+    bats = Math.floor((w - 10) * 4);
+    orcs = Math.floor((w - 15) * 3);
+    lichs = Math.floor((w - 15) * 3);
+    dragons = Math.floor((w - 20) * 2);
   }
   var hpMult = 1 + (w - 1) * 0.8;
-  return { slimes: slimes, skeletons: skeletons, goblins: goblins, hpMult: hpMult };
+  return { slimes: slimes, bigSlimes: bigSlimes, skeletons: skeletons, goblins: goblins, bats: bats, orcs: orcs, lichs: lichs, dragons: dragons, hpMult: hpMult };
 }
 
 function startWave() {
   wave++;
   var cfg = getWaveConfig(wave);
-  waveEnemyCount = cfg.slimes + cfg.skeletons + cfg.goblins;
+  waveEnemyCount = cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats + cfg.orcs + cfg.lichs + cfg.dragons;
   waveEnemiesSpawned = 0;
   waveEnemiesKilled = 0;
   waveActive = true;
@@ -1908,8 +2329,13 @@ function drawEnemies() {
       ctx.globalAlpha = 0.75;
     }
     if (e.type === 'slime') drawSlime(e.x, e.y, e.hp, e.maxHp);
+    else if (e.type === 'bigSlime') drawBigSlime(e.x, e.y, e.hp, e.maxHp);
     else if (e.type === 'skeleton') drawSkeleton(e.x, e.y, e.hp, e.maxHp);
     else if (e.type === 'goblin') drawGoblin(e.x, e.y, e.hp, e.maxHp);
+    else if (e.type === 'bat') drawBat(e.x, e.y, e.hp, e.maxHp);
+    else if (e.type === 'orc') drawOrc(e.x, e.y, e.hp, e.maxHp);
+    else if (e.type === 'lich') drawLich(e.x, e.y, e.hp, e.maxHp);
+    else if (e.type === 'dragon') drawDragon(e.x, e.y, e.hp, e.maxHp);
     else if (e.type === 'boss') drawBoss(e.x, e.y, e.hp, e.maxHp);
     // Draw slow effect overlay
     if (e.slowTimer > 0) {
@@ -1939,7 +2365,8 @@ function damageEnemy(e, dmg) {
       spawnItem(e.x + 15, e.y + 10);
       spawnItem(e.x - 15, e.y + 10);
     } else {
-      var deathColor = e.type === 'slime' ? '#4ade80' : e.type === 'skeleton' ? '#e2e8f0' : '#2d8a4e';
+      var deathColors = { slime: '#4ade80', bigSlime: '#22c55e', skeleton: '#e2e8f0', goblin: '#2d8a4e', bat: '#a855f7', orc: '#854d0e', lich: '#7c3aed', dragon: '#ef4444' };
+      var deathColor = deathColors[e.type] || '#888888';
       spawnParticles(e.x, e.y, deathColor, 12, 100);
       spawnParticles(e.x, e.y, '#ffffff', 6, 60);
     }
@@ -2286,6 +2713,7 @@ function collectItem(it) {
       frostLevel++;
       frostDamage += 4;
       frostRange += 10;
+    if (frostRange > 350) frostRange = 350;
     }
   } else if (it.type === 'windorb') {
     windOwned = true;
@@ -2584,10 +3012,15 @@ function update(dt) {
       if (Math.random() < dt / spawnInterval) {
         var cfg = getWaveConfig(wave);
         var r = Math.random();
-        var total = cfg.slimes + cfg.skeletons + cfg.goblins;
+        var total = cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats + cfg.orcs + cfg.lichs + cfg.dragons;
         if (r < cfg.slimes / total) spawnEnemy('slime');
-        else if (r < (cfg.slimes + cfg.skeletons) / total) spawnEnemy('skeleton');
-        else spawnEnemy('goblin');
+        else if (r < (cfg.slimes + cfg.bigSlimes) / total) spawnEnemy('bigSlime');
+        else if (r < (cfg.slimes + cfg.bigSlimes + cfg.skeletons) / total) spawnEnemy('skeleton');
+        else if (r < (cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins) / total) spawnEnemy('goblin');
+        else if (r < (cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats) / total) spawnEnemy('bat');
+        else if (r < (cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats + cfg.orcs) / total) spawnEnemy('orc');
+        else if (r < (cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats + cfg.orcs + cfg.lichs) / total) spawnEnemy('lich');
+        else spawnEnemy('dragon');
       }
     }
     waveTimer -= dt;
@@ -2681,7 +3114,7 @@ function render() {
     ctx.lineWidth = 1.5;
     ctx.setLineDash([4, 8]);
     ctx.beginPath();
-    ctx.arc(player.x, player.y, Math.min(frostRange, 130), 0, Math.PI * 2);
+    ctx.arc(player.x, player.y, Math.min(frostRange, 350), 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
@@ -2823,7 +3256,7 @@ function startGame() {
     windAngle = 0;
     // Skip the normal startWave, set up wave directly
     var cfg = getWaveConfig(wave);
-    waveEnemyCount = cfg.slimes + cfg.skeletons + cfg.goblins;
+  waveEnemyCount = cfg.slimes + cfg.bigSlimes + cfg.skeletons + cfg.goblins + cfg.bats + cfg.orcs + cfg.lichs + cfg.dragons;
     waveEnemiesSpawned = 0;
     waveEnemiesKilled = 0;
     waveActive = true;
