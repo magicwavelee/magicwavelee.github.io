@@ -2355,15 +2355,25 @@ function drawEnemies() {
 function damageEnemy(e, dmg) {
   e.hp -= dmg;
   e.hitFlash = 0.15;
-  if (e.hp <= 0) {
-    if (e.type === 'boss') {
-      for (var bi = 0; bi < 40; bi++) spawnParticles(e.x, e.y, '#dc2626', 4, 200);
-      for (var bi2 = 0; bi2 < 20; bi2++) spawnParticles(e.x, e.y, '#fbbf24', 4, 150);
-      bossActive = false;
-      bossProjectiles = [];
-      spawnItem(e.x, e.y);
-      spawnItem(e.x + 15, e.y + 10);
-      spawnItem(e.x - 15, e.y + 10);
+    if (e.hp <= 0) {
+      if (e.type === 'boss') {
+        for (var bi = 0; bi < 40; bi++) spawnParticles(e.x, e.y, '#dc2626', 4, 200);
+        for (var bi2 = 0; bi2 < 20; bi2++) spawnParticles(e.x, e.y, '#fbbf24', 4, 150);
+        // Only clear bossActive when ALL bosses are dead
+        var anyBossAlive = false;
+        for (var bk = 0; bk < enemies.length; bk++) {
+          if (enemies[bk] !== e && enemies[bk].type === 'boss' && enemies[bk].hp > 0) {
+            anyBossAlive = true;
+            break;
+          }
+        }
+        if (!anyBossAlive) {
+          bossActive = false;
+          bossProjectiles = [];
+        }
+        spawnItem(e.x, e.y);
+        spawnItem(e.x + 15, e.y + 10);
+        spawnItem(e.x - 15, e.y + 10);
     } else {
       var deathColors = { slime: '#4ade80', bigSlime: '#22c55e', skeleton: '#e2e8f0', goblin: '#2d8a4e', bat: '#a855f7', orc: '#854d0e', lich: '#7c3aed', dragon: '#ef4444' };
       var deathColor = deathColors[e.type] || '#888888';
