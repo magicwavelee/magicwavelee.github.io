@@ -2458,7 +2458,7 @@ function update(dt) {
             life: 2,
             radius: tornadoRadius,
             spinAngle: 0,
-            knockback: 200 + (windLevel - 1) * 30,
+            knockback: Math.min(200 + (windLevel - 1) * 30, 450),
             hitEnemies: [],
             trail: []
           });
