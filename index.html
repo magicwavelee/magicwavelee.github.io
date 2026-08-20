@@ -1729,6 +1729,12 @@ function updateEnemies(dt) {
       if (Math.abs(e.knockX) < 1) e.knockX = 0;
       if (Math.abs(e.knockY) < 1) e.knockY = 0;
     }
+    // Clamp position to keep monsters within screen bounds (+margin)
+    var margin = 80;
+    if (e.x < -margin) e.x = -margin;
+    if (e.x > W + margin) e.x = W + margin;
+    if (e.y < -margin) e.y = -margin;
+    if (e.y > H + margin) e.y = H + margin;
     e.animTime += dt;
     if (e.hitFlash > 0) e.hitFlash -= dt;
     if (e.slowTimer > 0) e.slowTimer -= dt;
