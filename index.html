@@ -2692,8 +2692,11 @@ function resizeCanvas() {
   var wrap = canvasWrap;
   var rect = wrap.getBoundingClientRect();
   dpr = window.devicePixelRatio || 1;
-  W = rect.width;
-  H = rect.height;
+  // Lock game world size on first call; ignore zoom changes during gameplay
+  if (!W || !H) {
+    W = rect.width;
+    H = rect.height;
+  }
   gameCanvas.width = W * dpr;
   gameCanvas.height = H * dpr;
   gameCanvas.style.width = W + 'px';
@@ -2706,6 +2709,9 @@ function startGame() {
   screenGame.classList.add('show');
   modalGameOver.classList.remove('show');
 
+  // Reset canvas size so it matches current viewport
+  W = 0;
+  H = 0;
   resizeCanvas();
   generateBackground();
 
