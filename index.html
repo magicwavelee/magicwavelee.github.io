@@ -1939,7 +1939,7 @@ function fireLightning() {
 
 function fireFrostNova() {
   var rangeSq = frostRange * frostRange;
-  var freezeTime = 2 + (frostLevel - 1) * 0.5;
+  var freezeTime = Math.min(0.1 + (frostLevel - 1) * 0.05, 2);
   var hitCount = 0;
   for (var fi = 0; fi < enemies.length; fi++) {
     var fe = enemies[fi];
