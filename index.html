@@ -477,7 +477,7 @@ var lightningLevel = 0;
 var lightningDamage = 12;
 var lightningTargets = 1;
 var fireballLevel = 1;
-var fireballDamage = 18;
+var fireballDamage = 36;
 
 var fireballSpeed = 100;
 var damageMultiplier = 1;
@@ -2158,7 +2158,7 @@ function collectItem(it) {
   } else if (it.type === 'fireorb') {
     if (fireballLevel < 100) {
       fireballLevel++;
-      fireballDamage += 2;
+      fireballDamage += 4;
     }
   } else if (it.type === 'lightningorb') {
     lightningOwned = true;
@@ -2184,7 +2184,7 @@ function collectItem(it) {
     gemLevel++;
     totalDamageBonus += 0.1;
     damageMultiplier = 1 + totalDamageBonus;
-    fireballDamage = Math.floor((18 + (fireballLevel - 1) * 13.35) * damageMultiplier);
+    fireballDamage = Math.floor((36 + (fireballLevel - 1) * 26.7) * damageMultiplier);
     if (lightningOwned) lightningDamage = Math.floor((12 + (lightningLevel - 1) * 2.32) * damageMultiplier);
     if (frostOwned) frostDamage = Math.floor((6 + Math.floor((frostLevel - 1) * 1.62)) * damageMultiplier);
     if (windOwned) windDamage = Math.floor((9 + Math.floor((windLevel - 1) * 1.62)) * damageMultiplier);
@@ -2769,7 +2769,7 @@ function startGame() {
     lightningDamage = 12;
     lightningTargets = 4;
     fireballLevel = 1;
-    fireballDamage = 18;
+    fireballDamage = 36;
     fireballSpeed = 100;
     damageMultiplier = 1;
     totalDamageBonus = 0;
