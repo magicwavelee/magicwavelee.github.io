@@ -1959,7 +1959,7 @@ function fireFrostNova() {
     spawnParticles(player.x, player.y, '#93c5fd', hitCount * 3, 60);
   }
   var shardCount = 6 + Math.floor((frostLevel - 1) * 0.8);
-  var shardSpeed = 120 + (frostLevel - 1) * 10;
+  var shardSpeed = frostRange * 2; // shards travel exactly frostRange distance
   var shardSize = 6 + (frostLevel - 1) * 0.3;
   for (var si = 0; si < shardCount; si++) {
     var angle = (si / shardCount) * Math.PI * 2;
@@ -1968,8 +1968,8 @@ function fireFrostNova() {
       y: player.y,
       vx: Math.cos(angle) * shardSpeed,
       vy: Math.sin(angle) * shardSpeed,
-      life: 0.5 + (frostLevel - 1) * 0.02,
-      maxLife: 0.5 + (frostLevel - 1) * 0.02,
+      life: 0.5,
+      maxLife: 0.5,
       size: shardSize
     });
   }
