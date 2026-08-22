@@ -1554,55 +1554,21 @@ function drawHUD() {
 function getWaveConfig(w) {
   var slimes, bigSlimes, redSlimes, bigRedSlimes, blueSlimes, bigBlueSlimes;
   var yellowSlimes, bigYellowSlimes, purpleSlimes, bigPurpleSlimes;
-  if (w <= 4) {
-    slimes = 15 + Math.floor(w * 10);
-    bigSlimes = 0; redSlimes = 0; bigRedSlimes = 0;
-    blueSlimes = 0; bigBlueSlimes = 0; yellowSlimes = 0; bigYellowSlimes = 0;
-    purpleSlimes = 0; bigPurpleSlimes = 0;
-  } else if (w <= 10) {
-    slimes = 40 + Math.floor(w * 8);
-    bigSlimes = Math.floor((w - 4) * 4);
-    redSlimes = 0; bigRedSlimes = 0;
-    blueSlimes = 0; bigBlueSlimes = 0; yellowSlimes = 0; bigYellowSlimes = 0;
-    purpleSlimes = 0; bigPurpleSlimes = 0;
-  } else if (w <= 15) {
-    slimes = 30 + Math.floor(w * 6);
-    bigSlimes = Math.floor(w * 3);
-    redSlimes = Math.floor((w - 10) * 5);
-    bigRedSlimes = Math.floor((w - 10) * 2);
-    blueSlimes = 0; bigBlueSlimes = 0; yellowSlimes = 0; bigYellowSlimes = 0;
-    purpleSlimes = 0; bigPurpleSlimes = 0;
-  } else if (w <= 20) {
-    slimes = 25 + Math.floor(w * 5);
-    bigSlimes = Math.floor(w * 2);
-    redSlimes = Math.floor(w * 4);
-    bigRedSlimes = Math.floor((w - 10) * 2);
-    blueSlimes = Math.floor((w - 15) * 5);
-    bigBlueSlimes = Math.floor((w - 15) * 2);
-    yellowSlimes = 0; bigYellowSlimes = 0;
-    purpleSlimes = 0; bigPurpleSlimes = 0;
-  } else if (w <= 25) {
-    slimes = 20 + Math.floor(w * 4);
-    bigSlimes = Math.floor(w * 2);
-    redSlimes = Math.floor(w * 3);
-    bigRedSlimes = Math.floor((w - 10) * 2);
-    blueSlimes = Math.floor((w - 10) * 4);
-    bigBlueSlimes = Math.floor((w - 15) * 2);
-    yellowSlimes = Math.floor((w - 20) * 5);
-    bigYellowSlimes = Math.floor((w - 20) * 2);
-    purpleSlimes = 0; bigPurpleSlimes = 0;
-  } else {
-    slimes = 15 + Math.floor(w * 3);
-    bigSlimes = Math.floor(w * 2);
-    redSlimes = Math.floor(w * 3);
-    bigRedSlimes = Math.floor((w - 10) * 2);
-    blueSlimes = Math.floor((w - 10) * 3);
-    bigBlueSlimes = Math.floor((w - 15) * 2);
-    yellowSlimes = Math.floor((w - 15) * 4);
-    bigYellowSlimes = Math.floor((w - 20) * 2);
-    purpleSlimes = Math.floor((w - 25) * 4);
-    bigPurpleSlimes = Math.floor((w - 25) * 2);
-  }
+  // Green: small from w1, big from w11 (after green boss w10)
+  // Red: small from w11, big from w21 (after red boss w20)
+  // Blue: small from w16, big from w31 (after blue boss w30)
+  // Yellow: small from w21, big from w41 (after yellow boss w40)
+  // Purple: small from w26, big from w51 (after purple boss w50)
+  slimes = 15 + Math.floor(w * 10);
+  bigSlimes = (w >= 11) ? Math.floor((w - 10) * 4) : 0;
+  redSlimes = (w >= 11) ? Math.floor((w - 10) * 5) : 0;
+  bigRedSlimes = (w >= 21) ? Math.floor((w - 20) * 3) : 0;
+  blueSlimes = (w >= 16) ? Math.floor((w - 15) * 4) : 0;
+  bigBlueSlimes = (w >= 31) ? Math.floor((w - 30) * 3) : 0;
+  yellowSlimes = (w >= 21) ? Math.floor((w - 20) * 4) : 0;
+  bigYellowSlimes = (w >= 41) ? Math.floor((w - 40) * 3) : 0;
+  purpleSlimes = (w >= 26) ? Math.floor((w - 25) * 4) : 0;
+  bigPurpleSlimes = (w >= 51) ? Math.floor((w - 50) * 3) : 0;
   var hpMult = 1 + (w - 1) * 0.8;
   return {
     slimes: slimes, bigSlimes: bigSlimes,
