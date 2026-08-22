@@ -406,7 +406,7 @@ var ENEMY_TYPES = {
   bigYellowSlime:{ hp: 90,  speed: 55,  damage: 2, points: 26, color: '#ca8a04', radius: 22 },
   purpleSlime:   { hp: 45,  speed: 100, damage: 1, points: 18, color: '#a855f7', radius: 15 },
   bigPurpleSlime:{ hp: 110, speed: 65,  damage: 3, points: 30, color: '#7c3aed', radius: 24 },
-  boss:          { hp: 300, speed: 40,  damage: 2, points: 100, color: '#4ade80', radius: 30 }
+  boss:          { hp: 500, speed: 40,  damage: 2, points: 100, color: '#4ade80', radius: 30 }
 };
 var BOSS_INTERVAL = 5;
 var BOSS_SHOOT_COOLDOWN = 1.8;
@@ -691,7 +691,7 @@ function generateBackground() {
       x: Math.random() * 2000,
       y: Math.random() * H,
       size: Math.random() * 2 + 1,
-      speed: Math.random() * 20 + 10,
+      speed: Math.random() * 20 + 2,
       alpha: Math.random() * 0.5 + 0.2,
       color: Math.random() > 0.5 ? '#a78bfa' : '#818cf8'
     });
@@ -715,7 +715,7 @@ function drawBackground() {
   for (i = 0; i < bgStars.length; i++) {
     var s = bgStars[i];
     sx = ((s.x - cameraX * 0.05) % (W + 200) + W + 200) % (W + 200) - 100;
-    sy = ((s.y - cameraY * 0.02) % (H + 100) + H + 100) % (H + 100) - 50;
+    sy = ((s.y - cameraY * 0.02) % (H + 20) + H + 20) % (H + 20) - 50;
     var twinkleAlpha = 0.5 + 0.5 * Math.sin(time * s.speed + s.twinkle);
     ctx.globalAlpha = twinkleAlpha * 0.8;
     ctx.fillStyle = '#ffffff';
@@ -757,7 +757,7 @@ function drawBackground() {
     ctx.beginPath();
     ctx.moveTo(sx - hf.w / 2, hillBase);
     ctx.quadraticCurveTo(sx - hf.w / 4, hillBase - hf.h, sx, hillBase - hf.h + 5);
-    ctx.quadraticCurveTo(sx + hf.w / 4, hillBase - hf.h + 10, sx + hf.w / 2, hillBase);
+    ctx.quadraticCurveTo(sx + hf.w / 4, hillBase - hf.h + 2, sx + hf.w / 2, hillBase);
     ctx.closePath();
     ctx.fill();
   }
@@ -796,7 +796,7 @@ function drawBackground() {
   for (i = 0; i < bgFlowers.length; i++) {
     var fl = bgFlowers[i];
     sx = ((fl.x - cameraX * 0.4) % (3000 + 200) + 3000 + 200) % (3000 + 200) - 100;
-    sy = grassBase + 10 + Math.sin(sx * 0.05) * 8;
+    sy = grassBase + 2 + Math.sin(sx * 0.05) * 8;
     if (sy > H) continue;
     ctx.fillStyle = fl.color;
     ctx.beginPath();
@@ -845,7 +845,7 @@ function drawBackground() {
   for (i = 0; i < bgParticles.length; i++) {
     var bp = bgParticles[i];
     var bpx = ((bp.x - cameraX * 0.15) % (W + 200) + W + 200) % (W + 200) - 100;
-    var bpy = ((bp.y + Math.sin(time + bp.x) * 20 - cameraY * 0.1) % (H + 100) + H + 100) % (H + 100) - 50;
+    var bpy = ((bp.y + Math.sin(time + bp.x) * 20 - cameraY * 0.1) % (H + 20) + H + 20) % (H + 20) - 50;
     ctx.globalAlpha = bp.alpha * (0.5 + 0.5 * Math.sin(time * 2 + i));
     ctx.fillStyle = bp.color;
     ctx.beginPath();
@@ -1469,7 +1469,7 @@ function drawHUD() {
     if (hi < player.hp) {
       var beat = 1 + Math.sin(time * 4 + hi * 0.5) * 0.08;
       ctx.save();
-      ctx.translate(hx + 10, hy + 10);
+      ctx.translate(hx + 2, hy + 2);
       ctx.scale(beat, beat);
       ctx.translate(-10, -10);
       ctx.fillStyle = '#ef4444';
@@ -1484,11 +1484,11 @@ function drawHUD() {
     } else {
       ctx.fillStyle = '#4a1a1a';
       ctx.beginPath();
-      ctx.moveTo(hx + 10, hy + 14);
+      ctx.moveTo(hx + 2, hy + 14);
       ctx.bezierCurveTo(hx + 3, hy + 8, hx + 3, hy + 2, hx + 6, hy + 1);
-      ctx.bezierCurveTo(hx + 9, hy, hx + 10, hy + 3, hx + 10, hy + 3);
-      ctx.bezierCurveTo(hx + 10, hy + 3, hx + 11, hy, hx + 14, hy + 1);
-      ctx.bezierCurveTo(hx + 17, hy + 2, hx + 17, hy + 8, hx + 10, hy + 14);
+      ctx.bezierCurveTo(hx + 9, hy, hx + 2, hy + 3, hx + 2, hy + 3);
+      ctx.bezierCurveTo(hx + 2, hy + 3, hx + 11, hy, hx + 14, hy + 1);
+      ctx.bezierCurveTo(hx + 17, hy + 2, hx + 17, hy + 8, hx + 2, hy + 14);
       ctx.fill();
     }
   }
@@ -1847,8 +1847,8 @@ function damageEnemy(e, dmg) {
           bossProjectiles = [];
         }
         spawnItem(e.x, e.y);
-        spawnItem(e.x + 15, e.y + 10);
-        spawnItem(e.x - 15, e.y + 10);
+        spawnItem(e.x + 15, e.y + 2);
+        spawnItem(e.x - 15, e.y + 2);
     } else {
       var deathColors = { slime: '#4ade80', bigSlime: '#22c55e', redSlime: '#ef4444', bigRedSlime: '#dc2626', blueSlime: '#3b82f6', bigBlueSlime: '#2563eb', yellowSlime: '#eab308', bigYellowSlime: '#ca8a04', purpleSlime: '#a855f7', bigPurpleSlime: '#7c3aed' };
       var deathColor = deathColors[e.type] || '#888888';
@@ -1872,7 +1872,7 @@ function damageEnemy(e, dmg) {
 function findNearestEnemy() {
   var best = null;
   var bestDist = Infinity;
-  var rangeVal = Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 200);
+  var rangeVal = Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 2, 200);
   var rangeSq = rangeVal * rangeVal;
   for (var i = 0; i < enemies.length; i++) {
     var e = enemies[i];
@@ -1909,7 +1909,7 @@ function fireLightning() {
   if (!lightningOwned) return;
   var targets = [];
   var tempEnemies = enemies.slice();
-  var rangeSq = Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 10, 200);
+  var rangeSq = Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 2, 200);
   rangeSq = rangeSq * rangeSq;
   for (var i = 0; i < Math.min(lightningTargets, tempEnemies.length); i++) {
     var best = null;
@@ -1947,7 +1947,8 @@ function fireFrostNova() {
     var fdx = fe.x - player.x;
     var fdy = fe.y - player.y;
     if (fdx * fdx + fdy * fdy < rangeSq) {
-      fe.slowTimer = freezeTime;
+      // Boss: freeze time reduced by 70%
+      fe.slowTimer = (fe.type === 'boss') ? freezeTime * 0.3 : freezeTime;
       fe.slowFactor = 0;
       fe.frozen = true;
       damageEnemy(fe, frostDamage);
@@ -2013,8 +2014,10 @@ function updateProjectiles(dt) {
             var tSpeed = Math.sqrt(p.dx * p.dx + p.dy * p.dy);
             var pushX = tSpeed > 1 ? p.dx / tSpeed : 0;
             var pushY = tSpeed > 1 ? p.dy / tSpeed : -1;
-            e.knockX += pushX * p.knockback;
-            e.knockY += pushY * p.knockback;
+            // Boss: knockback reduced by 70%
+            var kbMult = (e.type === 'boss') ? 0.3 : 1;
+            e.knockX += pushX * p.knockback * kbMult;
+            e.knockY += pushY * p.knockback * kbMult;
             e.slowTimer = 1.0;
             e.slowFactor = 0.2;
             spawnParticles(e.x, e.y, '#22d3ee', 6, 50);
@@ -2197,7 +2200,7 @@ function collectItem(it) {
     if (frostLevel < 100) {
       frostLevel++;
       frostDamage += 4;
-      frostRange += 10;
+      frostRange += 2;
     if (frostRange > 200) frostRange = 200;
     }
   } else if (it.type === 'windorb') {
@@ -2486,7 +2489,7 @@ function update(dt) {
       bossProjectiles.splice(bi, 1);
       continue;
     }
-    if (bp.life <= 0 || bp.x < -100 || bp.x > W + 100 || bp.y < -100 || bp.y > H + 100) {
+    if (bp.life <= 0 || bp.x < -100 || bp.x > W + 20 || bp.y < -100 || bp.y > H + 20) {
       bossProjectiles.splice(bi, 1);
     }
   }
@@ -2593,7 +2596,7 @@ function render() {
   ctx.lineWidth = 1.5;
   ctx.setLineDash([6, 6]);
   ctx.beginPath();
-  ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 200), 0, Math.PI * 2);
+  ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 2, 200), 0, Math.PI * 2);
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.restore();
@@ -2620,7 +2623,7 @@ function render() {
     ctx.lineWidth = 1.5;
     ctx.setLineDash([2, 4]);
     ctx.beginPath();
-    ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 10, 350), 0, Math.PI * 2);
+    ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 2, 200), 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
@@ -2634,7 +2637,7 @@ function render() {
     ctx.lineWidth = 1.5;
     ctx.setLineDash([8, 4]);
     ctx.beginPath();
-    ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (windLevel - 1) * 10, 350), 0, Math.PI * 2);
+    ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (windLevel - 1) * 2, 200), 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
