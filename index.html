@@ -408,7 +408,7 @@ var ENEMY_TYPES = {
   bigPurpleSlime:{ hp: 110, speed: 65,  damage: 3, points: 30, color: '#7c3aed', radius: 24 },
   boss:          { hp: 500, speed: 40,  damage: 2, points: 100, color: '#4ade80', radius: 30 }
 };
-var BOSS_INTERVAL = 5;
+var BOSS_INTERVAL = 10;
 var BOSS_SHOOT_COOLDOWN = 1.8;
 
 /* ═══════════════════════════════════════
@@ -1554,14 +1554,14 @@ function drawHUD() {
 function getWaveConfig(w) {
   var slimes, bigSlimes, redSlimes, bigRedSlimes, blueSlimes, bigBlueSlimes;
   var yellowSlimes, bigYellowSlimes, purpleSlimes, bigPurpleSlimes;
-  if (w <= 5) {
+  if (w <= 4) {
     slimes = 15 + Math.floor(w * 10);
     bigSlimes = 0; redSlimes = 0; bigRedSlimes = 0;
     blueSlimes = 0; bigBlueSlimes = 0; yellowSlimes = 0; bigYellowSlimes = 0;
     purpleSlimes = 0; bigPurpleSlimes = 0;
   } else if (w <= 10) {
     slimes = 40 + Math.floor(w * 8);
-    bigSlimes = Math.floor((w - 5) * 4);
+    bigSlimes = Math.floor((w - 4) * 4);
     redSlimes = 0; bigRedSlimes = 0;
     blueSlimes = 0; bigBlueSlimes = 0; yellowSlimes = 0; bigYellowSlimes = 0;
     purpleSlimes = 0; bigPurpleSlimes = 0;
