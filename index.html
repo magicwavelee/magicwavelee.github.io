@@ -2405,12 +2405,12 @@ function update(dt) {
   autoAttackTimer -= dt;
   if (autoAttackTimer <= 0) {
     fireFireball();
-    autoAttackTimer = Math.max(0.25, 0.7 - (fireballLevel - 1) * 0.0045);
+    autoAttackTimer = Math.max(0.35, 1.0 - (fireballLevel - 1) * 0.0066);
   }
   lightningTimer -= dt;
   if (lightningTimer <= 0) {
     fireLightning();
-    lightningTimer = Math.max(0.35, 1.0 - (lightningLevel - 1) * 0.0066);
+    lightningTimer = Math.max(0.25, 0.7 - (lightningLevel - 1) * 0.0045);
   }
 
   // Frost nova
