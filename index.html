@@ -474,7 +474,7 @@ var autoAttackTimer = 0;
 var lightningTimer = 0;
 var lightningOwned = false;
 var lightningLevel = 0;
-var lightningDamage = 10;
+var lightningDamage = 15;
 var lightningTargets = 1;
 var fireballLevel = 1;
 var fireballDamage = 12;
@@ -2192,7 +2192,7 @@ function collectItem(it) {
     totalDamageBonus += 0.1;
     damageMultiplier = 1 + totalDamageBonus;
     fireballDamage = Math.floor((12 + (fireballLevel - 1) * 1) * damageMultiplier);
-    if (lightningOwned) lightningDamage = Math.floor((10 + (lightningLevel - 1) * 1) * damageMultiplier);
+    if (lightningOwned) lightningDamage = Math.floor((15 + (lightningLevel - 1) * 1) * damageMultiplier);
     if (frostOwned) frostDamage = Math.floor((4 + Math.floor((frostLevel - 1) * 0.5)) * damageMultiplier);
     if (windOwned) windDamage = Math.floor((6 + Math.floor((windLevel - 1) * 0.5)) * damageMultiplier);
   }
@@ -2774,7 +2774,7 @@ function startGame() {
     lightningTimer = LIGHTNING_COOLDOWN;
     lightningOwned = false;
     lightningLevel = 0;
-    lightningDamage = 10;
+    lightningDamage = 15;
     lightningTargets = 4;
     fireballLevel = 1;
     fireballDamage = 12;
