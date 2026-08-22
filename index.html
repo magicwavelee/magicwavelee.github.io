@@ -478,7 +478,7 @@ var lightningDamage = 12;
 var lightningTargets = 1;
 var fireballLevel = 1;
 var fireballDamage = 18;
-var fireballPierce = 2;
+
 var fireballSpeed = 100;
 var damageMultiplier = 1;
 var totalDamageBonus = 0;
@@ -1873,8 +1873,6 @@ function fireFireball() {
     dx: (dx / dist) * fireballSpeed,
     dy: (dy / dist) * fireballSpeed,
     damage: fireballDamage,
-    pierce: fireballPierce,
-    pierced: 0,
     type: 'fireball',
     life: 2,
     radius: Math.min(5 + (fireballLevel - 1) * 0.202, 25),
@@ -2004,10 +2002,7 @@ function updateProjectiles(dt) {
         } else {
           var killed = damageEnemy(e, p.damage);
           spawnParticles(p.x, p.y, '#fb923c', 5, 60);
-          p.pierced++;
-          if (p.pierced >= p.pierce) {
-            p.life = 0;
-          }
+          p.life = 0;
           break;
         }
       }
@@ -2165,7 +2160,6 @@ function collectItem(it) {
     if (fireballLevel < 100) {
       fireballLevel++;
       fireballDamage += 2;
-      fireballPierce += 1;
     }
   } else if (it.type === 'lightningorb') {
     lightningOwned = true;
@@ -2713,7 +2707,6 @@ function startGame() {
     totalKills = savedState.totalKills;
     fireballLevel = savedState.fireballLevel;
     fireballDamage = savedState.fireballDamage;
-    fireballPierce = savedState.fireballPierce;
     fireballSpeed = savedState.fireballSpeed;
     lightningOwned = savedState.lightningOwned;
     lightningLevel = savedState.lightningLevel;
@@ -2778,7 +2771,6 @@ function startGame() {
     lightningTargets = 4;
     fireballLevel = 1;
     fireballDamage = 18;
-    fireballPierce = 2;
     fireballSpeed = 100;
     damageMultiplier = 1;
     totalDamageBonus = 0;
