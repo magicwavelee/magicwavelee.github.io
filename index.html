@@ -474,10 +474,10 @@ var autoAttackTimer = 0;
 var lightningTimer = 0;
 var lightningOwned = false;
 var lightningLevel = 0;
-var lightningDamage = 15;
+var lightningDamage = 10;
 var lightningTargets = 1;
 var fireballLevel = 1;
-var fireballDamage = 25;
+var fireballDamage = 12;
 var fireballPierce = 2;
 var fireballSpeed = 100;
 var damageMultiplier = 1;
@@ -486,7 +486,7 @@ var gemLevel = 0;
 
 var frostOwned = false;
 var frostLevel = 0;
-var frostDamage = 12;
+var frostDamage = 4;
 var frostCooldown = 3;
 var frostTimer = 0;
 var frostRange = 100;
@@ -494,7 +494,7 @@ var frostShards = [];
 
 var windOwned = false;
 var windLevel = 0;
-var windDamage = 8;
+var windDamage = 6;
 var windCooldown = 2.5;
 var windTimer = 0;
 var windGusts = [];
@@ -2185,21 +2185,21 @@ function collectItem(it) {
   } else if (it.type === 'fireorb') {
     if (fireballLevel < 100) {
       fireballLevel++;
-      fireballDamage += 5;
+      fireballDamage += 2;
       fireballPierce += 1;
     }
   } else if (it.type === 'lightningorb') {
     lightningOwned = true;
     if (lightningLevel < 100) {
       lightningLevel++;
-      lightningDamage += 5;
+      lightningDamage += 2;
       lightningTargets += 1;
     }
   } else if (it.type === 'frostorb') {
     frostOwned = true;
     if (frostLevel < 100) {
       frostLevel++;
-      frostDamage += 4;
+      frostDamage += 1;
       frostRange += 2;
     if (frostRange > 200) frostRange = 200;
     }
@@ -2207,17 +2207,17 @@ function collectItem(it) {
     windOwned = true;
     if (windLevel < 100) {
       windLevel++;
-      windDamage += 3;
+      windDamage += 1;
       windCooldown = Math.max(0.8, 2.5 - (windLevel - 1) * 0.2);
     }
   } else if (it.type === 'gem') {
     gemLevel++;
     totalDamageBonus += 0.1;
     damageMultiplier = 1 + totalDamageBonus;
-    fireballDamage = Math.floor((25 + (fireballLevel - 1) * 5) * damageMultiplier);
-    if (lightningOwned) lightningDamage = Math.floor((20 + (lightningLevel - 1) * 5) * damageMultiplier);
-    if (frostOwned) frostDamage = Math.floor((12 + (frostLevel - 1) * 4) * damageMultiplier);
-    if (windOwned) windDamage = Math.floor((8 + (windLevel - 1) * 3) * damageMultiplier);
+    fireballDamage = Math.floor((12 + (fireballLevel - 1) * 2) * damageMultiplier);
+    if (lightningOwned) lightningDamage = Math.floor((10 + (lightningLevel - 1) * 2) * damageMultiplier);
+    if (frostOwned) frostDamage = Math.floor((4 + (frostLevel - 1) * 1) * damageMultiplier);
+    if (windOwned) windDamage = Math.floor((6 + (windLevel - 1) * 1) * damageMultiplier);
   }
 }
 
@@ -2796,10 +2796,10 @@ function startGame() {
     lightningTimer = LIGHTNING_COOLDOWN;
     lightningOwned = false;
     lightningLevel = 0;
-    lightningDamage = 20;
+    lightningDamage = 10;
     lightningTargets = 4;
     fireballLevel = 1;
-    fireballDamage = 25;
+    fireballDamage = 12;
     fireballPierce = 2;
     fireballSpeed = 100;
     damageMultiplier = 1;
@@ -2808,12 +2808,12 @@ function startGame() {
 
     frostOwned = false;
     frostLevel = 0;
-    frostDamage = 12;
+    frostDamage = 4;
     frostTimer = frostCooldown;
     frostRange = 70;
     windOwned = false;
     windLevel = 0;
-    windDamage = 8;
+    windDamage = 6;
     windAngle = 0;
     windRadius = 45;
 
