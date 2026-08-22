@@ -1859,8 +1859,8 @@ function damageEnemy(e, dmg) {
     score += e.points;
     waveEnemiesKilled++;
     totalKills++;
-    // Wave bonus: +10% at wave 1, decreases to 0% at wave 5
-    var waveBonus = Math.max(0, (5 - wave) * 0.025);
+    // Wave bonus: +20% at wave 1, decreases to 0% at wave 5
+    var waveBonus = Math.max(0, (5 - wave) * 0.05);
     if (Math.random() < DROP_CHANCE + waveBonus) {
       spawnItem(e.x, e.y);
     }
