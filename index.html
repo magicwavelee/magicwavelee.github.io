@@ -378,7 +378,7 @@ var PLAYER_MAX_HP = 5;
 var PLAYER_SIZE = 20;
 var PLAYER_INVULN_TIME = 0.5;
 var AUTO_ATTACK_COOLDOWN = 0.7;
-var BASE_ATTACK_RANGE = 200;
+var BASE_ATTACK_RANGE = 100;
 var ITEM_COLLECT_R = 80;
 var ITEM_MAGNET_R = 250;
 var ITEM_LIFETIME = 10;
@@ -489,7 +489,7 @@ var frostLevel = 0;
 var frostDamage = 12;
 var frostCooldown = 3;
 var frostTimer = 0;
-var frostRange = 70;
+var frostRange = 100;
 var frostShards = [];
 
 var windOwned = false;
@@ -1872,7 +1872,7 @@ function damageEnemy(e, dmg) {
 function findNearestEnemy() {
   var best = null;
   var bestDist = Infinity;
-  var rangeVal = Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 350);
+  var rangeVal = Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 200);
   var rangeSq = rangeVal * rangeVal;
   for (var i = 0; i < enemies.length; i++) {
     var e = enemies[i];
@@ -1909,7 +1909,7 @@ function fireLightning() {
   if (!lightningOwned) return;
   var targets = [];
   var tempEnemies = enemies.slice();
-  var rangeSq = Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 10, 350);
+  var rangeSq = Math.min(BASE_ATTACK_RANGE + (lightningLevel - 1) * 10, 200);
   rangeSq = rangeSq * rangeSq;
   for (var i = 0; i < Math.min(lightningTargets, tempEnemies.length); i++) {
     var best = null;
@@ -2198,7 +2198,7 @@ function collectItem(it) {
       frostLevel++;
       frostDamage += 4;
       frostRange += 10;
-    if (frostRange > 350) frostRange = 350;
+    if (frostRange > 200) frostRange = 200;
     }
   } else if (it.type === 'windorb') {
     windOwned = true;
@@ -2593,7 +2593,7 @@ function render() {
   ctx.lineWidth = 1.5;
   ctx.setLineDash([6, 6]);
   ctx.beginPath();
-  ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 350), 0, Math.PI * 2);
+  ctx.arc(player.x, player.y, Math.min(BASE_ATTACK_RANGE + (fireballLevel - 1) * 10, 200), 0, Math.PI * 2);
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.restore();
@@ -2606,7 +2606,7 @@ function render() {
     ctx.lineWidth = 1.5;
     ctx.setLineDash([4, 8]);
     ctx.beginPath();
-    ctx.arc(player.x, player.y, Math.min(frostRange, 350), 0, Math.PI * 2);
+    ctx.arc(player.x, player.y, Math.min(frostRange, 200), 0, Math.PI * 2);
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.restore();
