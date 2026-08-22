@@ -1576,7 +1576,7 @@ function getWaveConfig(w) {
   // Purple (starts w41)
   purpleSlimes = (w >= 41) ? Math.floor((w - 40) * 4) : 0;
   bigPurpleSlimes = (w >= 46) ? Math.floor((w - 45) * 3) : 0;
-  var hpMult = 1 + (w - 1) * 0.8;
+  var hpMult = 1 + (w - 1) * 0.4;
   return {
     slimes: slimes, bigSlimes: bigSlimes,
     redSlimes: redSlimes, bigRedSlimes: bigRedSlimes,
